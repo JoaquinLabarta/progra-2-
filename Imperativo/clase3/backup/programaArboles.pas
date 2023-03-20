@@ -170,20 +170,10 @@ begin
   end;
 end;
 
-function buscar(a:arbol;numero:integer):arbol;
-begin
- if(a<>nil)then begin
-    if(a^.dato=numero)then buscar:=a;
-    buscar(a^.HI,numero);
-    buscar(a^.HD,numero);
- end else buscar:=nil;
-end;
-
   Var
 
  l: lista;
  a: arbol;
- numero:integer;
 
 begin
  Randomize;
@@ -211,12 +201,6 @@ begin
   Writeln('Recorrido PreOrden ');
   PreOrden(a);
   writeln();
-  writeln('----------------------------------------------------------------------');
-  writeln('ingrese un valor a ser buscado');
-  readln(numero);
-  if(buscar(a,numero)=nil)then
-     writeln('se encontro el valor en el arbol')
-  else
-    writeln('no se encontro el valor');
-  readln();
+  writeln('------------------------------------------');
+ readln;
 end.

@@ -9,8 +9,8 @@
         <Filename Value="programaArboles.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="101"/>
-        <CursorPos X="2" Y="138"/>
+        <TopLine Value="5"/>
+        <CursorPos X="35" Y="85"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -18,6 +18,7 @@
         <Filename Value="..\..\..\..\..\Escritorio\REDIC_PROGRA2\Imperativo\clase3\ProgramaGenerarLista.pas"/>
         <UnitName Value="arboles"/>
         <EditorIndex Value="1"/>
+        <TopLine Value="97"/>
         <CursorPos X="76" Y="20"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
