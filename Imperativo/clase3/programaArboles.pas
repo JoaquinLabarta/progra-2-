@@ -170,24 +170,55 @@ begin
   end;
 end;
 
-function buscar(a:arbol;numero:integer):arbol;
+function vermin(a:arbol):integer;
 begin
  if(a<>nil)then begin
-    if(a^.dato=numero)then buscar:=a;
-    buscar(a^.HI,numero);
-    buscar(a^.HD,numero);
- end else buscar:=nil;
+    if(a^.HI <>nil)then begin
+      vermin:=vermin(a^.HI);
+    end
+    else
+      vermin:=a^.dato;
+ end;
 end;
+
+function vermax(a:arbol):integer;
+begin
+ if(a<>nil)then begin
+    if(a^.HD <>nil)then begin
+      vermax:=vermax(a^.HD);
+    end
+    else
+      vermax:=a^.dato;
+ end;
+end;
+
+function buscar(a:arbol;numero:integer;var encontro:boolean):arbol;
+begin
+ if(a<>nil)then begin
+    if(a^.dato=numero)then begin
+      encontro:=true;
+      buscar:=a;
+    end
+    else begin
+    buscar(a^.HI,numero,encontro);
+    buscar(a^.HD,numero,encontro);
+    end;
+    end;
+ if(encontro=false)then
+  buscar:=nil;
+
+ end;
 
   Var
 
  l: lista;
  a: arbol;
  numero:integer;
-
+ encontro:boolean;
 begin
  Randomize;
  a:= nil;
+ encontro:=false;
  crearLista(l);
  writeln ('Lista generada: ');
  imprimirLista(l);
@@ -212,11 +243,16 @@ begin
   PreOrden(a);
   writeln();
   writeln('----------------------------------------------------------------------');
-  writeln('ingrese un valor a ser buscado');
+  {writeln('ingrese un valor a ser buscado');
   readln(numero);
-  if(buscar(a,numero)=nil)then
+  if(buscar(a,numero,encontro)<>nil) and (encontro=true)then begin
      writeln('se encontro el valor en el arbol')
-  else
+  end
+  else begin
     writeln('no se encontro el valor');
+  end;  }
+  writeln('----------------------------------------------------------------------');
+  writeln ('el minimo es: ',vermin(a));
+  writeln('el maximo es ',vermax(a));
   readln();
 end.
