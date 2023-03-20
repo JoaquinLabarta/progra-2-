@@ -61,6 +61,7 @@ begin
    write(l^.dato, ' - ');
    l:= l^.sig;
  End;
+ writeln(' ' )   ;
 end;
 
 {-----------------------------------------------------------------------------
@@ -122,17 +123,84 @@ begin
                  end;
                end;
 end;
+ {-----------------------------------------------------------------------------
+Agregar Arbol - Agrega un entero a un arbol ABO, sin repetidos }
 
-Var
+Procedure insertar(var a: arbol; num:integer);
+begin
+   if (a = nil)then
+    begin
+      new (a);
+      a^.dato:= num;
+      a^.HI := nil;
+      a^.HD := nil;
+    end
+   else
+     if a^.dato> num then
+      insertar(a^.HI, num)
+    else
+      if a^.dato< num then
+       insertar(a^.HD, num)
+  end;
+
+Procedure PostOrden( a: arbol );
+begin
+  if ( a <> nil ) then begin
+    PostOrden(a^.HI);
+    PostOrden(a^.HD);
+    write (a^.dato, '   ');
+  end;
+end;
+
+Procedure enOrden( a: arbol );
+begin
+  if ( a <> nil ) then begin
+    enOrden (a^.HI);
+    write (a^.dato, '   ');
+    enOrden (a^.HD)
+  end;
+  end;
+
+Procedure PreOrden( a: arbol );
+begin
+  if ( a <> nil ) then begin
+    write (a^.dato, '   ');
+    preOrden(a^.HI);
+    preOrden(a^.HD);
+  end;
+end;
+
+  Var
 
  l: lista;
+ a: arbol;
 
 begin
  Randomize;
-
+ a:= nil;
  crearLista(l);
  writeln ('Lista generada: ');
  imprimirLista(l);
-
+ while l <> nil do
+ begin
+   insertar(a,l^.dato);
+   l:=l^.sig;
+ end;
+  Writeln  ('Arbol');
+  imprimirpornivel (a);
+  writeln();
+  writeln('-----------------------------------------------------------------------');
+  Writeln  ('Recorrido enOrden ');
+  EnOrden(a);
+  writeln();
+  writeln('-----------------------------------------------------------------------');
+  Writeln('Recorrido postorden ');
+  PostOrden(a);
+  writeln();
+  writeln('-----------------------------------------------------------------------');
+  Writeln('Recorrido PreOrden ');
+  PreOrden(a);
+  writeln();
+  writeln('------------------------------------------');
  readln;
 end.
