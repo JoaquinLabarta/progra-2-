@@ -316,6 +316,15 @@ begin
   end;
 end;
 
+Procedure enOrden2( a: arbol );
+begin
+  if ( a <> nil ) then begin
+    enOrden2 (a^.HI);
+    writeln(a^.dato^.dato.DNI);
+    enOrden2 (a^.HD)
+  end;
+end;
+
 procedure recorrerycontar(l:lista;var act:integer);
 begin
 act:=0;
@@ -345,8 +354,8 @@ begin
    if(a^.dato^.dato.DNI>inf)then
     if(a^.dato^.dato.DNI<sup)then begin
      with a^.dato^.dato do begin
-       writeln('el nombre y el apellido es : ',a^.dato^.dato.nombre_apellido);
-       writeln('el dni es : ',dni);
+       writeln('EL NOMBRE Y EL APELLIDO ES : ',a^.dato^.dato.nombre_apellido);
+       writeln('EL DNI ES : ',dni);
       end
      end
     else
@@ -442,13 +451,14 @@ begin
   a:=nil;
   cargararbol(a,l);
   writeln();
+  writeln('---------------------------------------------------------------');
   writeln('punto A');
   writeln();
   //imprimir arbol
-  writeln('------------------------------------------------------------');
   enOrden(a);
   {---------------------PUNTO B------------------------------------------}
   writeln();
+  writeln('---------------------------------------------------------------');
   writeln('punto B');
   writeln();
   maximo:=0;
@@ -456,21 +466,23 @@ begin
   writeln('EL EQUIPO QUE CONTIENE AL GOLEADOR DEL TORNEO ES : ',equipm,' Y LA CANTIDAD DE GOLES QUE METIO ES : ',maximo);
   {---------------------PUNTO C------------------------------------------}
   writeln();
+  writeln('---------------------------------------------------------------');
   writeln('punto C');
   writeln();
   acotado(a,28000000,32000000);
   {---------------------PUNTO D------------------------------------------}
   writeln();
+  writeln('---------------------------------------------------------------');
   writeln('punto D');
   writeln();
   writeln('ESTE ES EL ARBOL ANTES DEL BORRADO');
-  enOrden(a);
+  enOrden2(a);
   borrarelemento(a,34807474,resultado);
   writeln();
   writeln(resultado);
   writeln();
   writeln('ESTE ES EL ARBOL DESPUES DEL BORRADO');
-  enOrden(a);
+  enOrden2(a);
   readln();
 end.
 

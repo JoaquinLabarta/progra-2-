@@ -316,6 +316,15 @@ begin
   end;
 end;
 
+Procedure enOrden2( a: arbol );
+begin
+  if ( a <> nil ) then begin
+    enOrden2 (a^.HI);
+    writeln(a^.dato^.dato.DNI);
+    enOrden2 (a^.HD)
+  end;
+end;
+
 procedure recorrerycontar(l:lista;var act:integer);
 begin
 act:=0;
@@ -399,7 +408,6 @@ begin
       else if ((a^.HD = nil) and (a^.HI = nil) ) then begin
            dispose(a);
            a:=nil;
-
            resultado:=true;
            end
       //tiene hijo der
@@ -446,7 +454,6 @@ begin
   writeln('punto A');
   writeln();
   //imprimir arbol
-  writeln('------------------------------------------------------------');
   enOrden(a);
   {---------------------PUNTO B------------------------------------------}
   writeln();
@@ -465,13 +472,13 @@ begin
   writeln('punto D');
   writeln();
   writeln('ESTE ES EL ARBOL ANTES DEL BORRADO');
-  enOrden(a);
+  enOrden2(a);
   borrarelemento(a,34807474,resultado);
   writeln();
   writeln(resultado);
   writeln();
   writeln('ESTE ES EL ARBOL DESPUES DEL BORRADO');
-  enOrden(a);
+  enOrden2(a);
   readln();
 end.
 
