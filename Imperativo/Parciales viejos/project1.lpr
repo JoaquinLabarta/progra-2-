@@ -2,7 +2,6 @@ program project1;
 Uses
      sysutils;
 Type
-  string10 = string[10];
 
   //info interna de lista de los partidos (main)
   jug = record
@@ -20,12 +19,17 @@ Type
     sig: listagoles;
   end;
 
+  fecha=record
+     dia:1..31;
+     mes:1..12;
+     anio:integer;
+    end;
   //info lista partidos
   partido = record
     idpartido: string;
     eq1: string;
     eq2: string;
-    fecha: string10;
+    fechas: fecha;
     estadio: string;
     goljug: listagoles;
   end;
@@ -41,7 +45,7 @@ Type
   listaint = ^nodoint;
   nodoint = record
     //podria ser record la informacion
-    fecha: string10;
+    fechas: fecha;
     cantgoles: integer;
     sig: listaint;
   end;
@@ -63,20 +67,23 @@ Type
     hi: arbol;
   end;
 
+
+{----------MODULOS PROPIOS----------}
+
 //agregar a la lista interna del arbol
-Procedure agregar2(var l: listaint; cantgoles:integer; fecha:string10);
+Procedure agregar2(var l: listaint; cantgoles:integer; fecha:fecha);
 var
    aux: listaint;
 begin
      new(aux);
      aux^.cantgoles := cantgoles;
-     aux^.fecha := fecha;
+     aux^.fechas := fecha;
      aux^.sig := l;
      l:= aux;
 end;
 
 //insertar jugador en el arbol con opcion de repetido
-Procedure insertar(var a: arbol; data:jug; fecha:string10);
+Procedure insertar(var a: arbol; data:jug; fecha:fecha);
 begin
    if (a = nil)then
     begin
@@ -114,7 +121,7 @@ begin
     while (l^.info.goljug<>nil)do begin
       dnia:=l^.info.goljug^.info.dni;
       if (dnia = l^.info.goljug^.info.dni) then begin
-        insertar(a,l^.info.goljug^.info,l^.info.fecha);
+        insertar(a,l^.info.goljug^.info,l^.info.fechas);
         l^.info.goljug:=l^.info.goljug^.sig;
       end;
     end;
@@ -168,6 +175,95 @@ begin
    else acotado(a^.HD,inf,sup);
   end;
 
+procedure borrarlista (var l:listaint);
+var
+   aux: listaint;
+begin
+  while (l<>nil) do begin
+    aux:=l;
+    l:=l^.sig;
+    dispose(aux);
+  end;
+end;
+
+function vermin(a:arbol):integer;
+begin
+ if(a<>nil)then begin
+    if(a^.HI <>nil)then begin
+      vermin:=vermin(a^.HI);
+    end
+    else
+      vermin:=a^.info.dni;
+ end;
+end;
+
+function buscar(a:arbol; numero:integer; var encontro:boolean):arbol;
+begin
+ if(a<>nil)then begin
+    if(a^.info.dni=numero)then begin
+      encontro:=true;
+      buscar:=a;
+    end
+    else begin
+      if(numero<a^.info.dni)then
+       buscar(a^.HI,numero,encontro)
+       else
+         if(numero>a^.info.dni)then
+           buscar(a^.HD,numero,encontro);
+    end;
+    end;
+ if(encontro=false)then
+  buscar:=nil;
+ end;
+
+//borrar elementos
+procedure borrarelemento(var a:arbol;dato:integer;var resultado:boolean);
+var
+   auxa:arbol; encontro:boolean;
+begin
+ encontro:=false;
+ if(a=nil)then resultado:=false
+
+   else if(a^.info.dni > dato)then
+    borrarelemento(a^.HI,dato,resultado)
+
+   else if(a^.info.dni <dato)then
+    borrarelemento(a^.HD,dato,resultado)
+
+      //encontre dato dato
+      //si sus dos hijos apuntan a nil:
+      else if ((a^.HD = nil) and (a^.HI = nil) ) then begin
+           borrarlista(a^.lint);
+           dispose(a);
+           a:=nil;
+           resultado:=true;
+        end
+
+      //tiene hijo der
+      else if ((a^.HD <> nil) and (a^.HI = nil) ) then begin
+           auxa:=a;
+           a:=a^.HD;
+           dispose(auxa);
+           resultado:=true
+         end
+
+      //tiene hijo izq
+      else if  ((a^.HI <> nil) and (a^.HD = nil) ) then begin
+           auxa:=a;
+           a:=a^.HI;
+           dispose(auxa);
+           resultado:=true
+         end
+
+      //SI TIENE DOS HIJOS
+      else begin
+        auxa:= buscar(a,dato,encontro);
+        auxa^.info.dni:= vermin(a^.HD);
+        borrarelemento(a^.HD,auxa^.info.dni,resultado);
+     end
+end;
+
+
 //variables main
 var
   a: arbol;
@@ -176,6 +272,7 @@ var
   maxgoles: integer;
   maxeq: string;
   inf, sup: integer;
+  resultado: boolean;
 
 begin
   //Dispongo:
@@ -202,6 +299,9 @@ begin
   //busco e imprimo (revisar)
   acotado(a,inf,sup);
 
+  //borrar elemento con lista dentro
+  resultado:=false;
+  borrarelemento(a,34807474,resultado);
   readln();
 end.
 

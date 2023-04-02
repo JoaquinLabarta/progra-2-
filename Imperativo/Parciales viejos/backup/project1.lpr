@@ -2,8 +2,8 @@ program project1;
 Uses
      sysutils;
 Type
-  string10 = string[10];
 
+  //info interna de lista de los partidos (main)
   jug = record
     dni: integer;
     nombre: string;
@@ -12,34 +12,45 @@ Type
     cantgoles: integer;
     end;
 
+  //lista interna de lista de los partidos (main)
   listagoles = ^nodogol;
   nodogol = record
     info: jug;
     sig: listagoles;
   end;
 
+  fecha=record
+     dia:1..31;
+     mes:1..12;
+     anio:integer;
+    end;
+  //info lista partidos
   partido = record
     idpartido: string;
     eq1: string;
     eq2: string;
-    fecha: string10;
+    fechas: fecha;
     estadio: string;
     goljug: listagoles;
   end;
 
+  //lista partidos
   listapartidos = ^nodopartidos;
   nodopartidos = record
     info: partido;
     sig:listapartidos;
   end;
 
+  //lista interna arbol
   listaint = ^nodoint;
   nodoint = record
-    fecha: string10;
+    //podria ser record la informacion
+    fechas: fecha;
     cantgoles: integer;
     sig: listaint;
   end;
 
+  //informacion del arbol
   infoarb = record
     dni: integer;
     nombre: string;
@@ -47,6 +58,7 @@ Type
     eq: string;
   end;
 
+  //arbol
   arbol = ^nodoa;
   nodoa = record
     info: infoarb;
@@ -55,18 +67,23 @@ Type
     hi: arbol;
   end;
 
-Procedure agregar2(var l: listaint; cantgoles:integer; fecha:string10);
+
+{----------MODULOS PROPIOS----------}
+
+//agregar a la lista interna del arbol
+Procedure agregar2(var l: listaint; cantgoles:integer; fecha:fecha);
 var
    aux: listaint;
 begin
      new(aux);
      aux^.cantgoles := cantgoles;
-     aux^.fecha := fecha;
+     aux^.fechas := fecha;
      aux^.sig := l;
      l:= aux;
 end;
 
-Procedure insertar(var a: arbol; data:jug; fecha:string10);
+//insertar jugador en el arbol con opcion de repetido
+Procedure insertar(var a: arbol; data:jug; fecha:fecha);
 begin
    if (a = nil)then
     begin
@@ -95,6 +112,7 @@ begin
 
   end;
 
+//recorrer lista partidos y llama a insertar en el arbol
 procedure recorrerl(var a:arbol; l:listapartidos);
 var
    dnia:integer;
@@ -103,7 +121,7 @@ begin
     while (l^.info.goljug<>nil)do begin
       dnia:=l^.info.goljug^.info.dni;
       if (dnia = l^.info.goljug^.info.dni) then begin
-        insertar(a,l^.info.goljug^.info,l^.info.fecha);
+        insertar(a,l^.info.goljug^.info,l^.info.fechas);
         l^.info.goljug:=l^.info.goljug^.sig;
       end;
     end;
@@ -111,6 +129,7 @@ begin
   end;
 end;
 
+//recorrer lista interna del arbol para contar goles
 function recorrerlista (l: listaint): integer;
 var
    aux: listaint;
@@ -125,6 +144,7 @@ begin
   recorrerlista:=cant;
 end;
 
+//buscar y devolver el maximo goleador con su equipo, podria ser funcion pero tengo que preguntar si puedo devolver un string
 Procedure maximogoleador(a: arbol; var max: integer; var eq: string );
 var
    cant: integer;
@@ -141,6 +161,7 @@ end;
 
 end;
 
+//busqueda acotada por dni, no pude hacerlo descendente (¿cambiar orden de ifs?)
 procedure acotado(a:arbol;inf:integer;sup:integer);
 begin
   if(a<>nil)then
@@ -154,32 +175,132 @@ begin
    else acotado(a^.HD,inf,sup);
   end;
 
+procedure borrarlista (var l:listaint);
+var
+   aux: listaint;
+begin
+  while (l<>nil) do begin
+    aux:=l;
+    l:=l^.sig;
+    dispose(aux);
+  end;
+end;
+
+function vermin(a:arbol):integer;
+begin
+ if(a<>nil)then begin
+    if(a^.HI <>nil)then begin
+      vermin:=vermin(a^.HI);
+    end
+    else
+      vermin:=a^.info.dni;
+ end;
+end;
+
+function buscar(a:arbol; numero:integer; var encontro:boolean):arbol;
+begin
+ if(a<>nil)then begin
+    if(a^.info.dni=numero)then begin
+      encontro:=true;
+      buscar:=a;
+    end
+    else begin
+      if(numero<a^.info.dni)then
+       buscar(a^.HI,numero,encontro)
+       else
+         if(numero>a^.info.dni)then
+           buscar(a^.HD,numero,encontro);
+    end;
+    end;
+ if(encontro=false)then
+  buscar:=nil;
+ end;
+
+//borrar elementos
+procedure borrarelemento(var a:arbol;dato:integer;var resultado:boolean);
+var
+   auxa:arbol; encontro:boolean;
+begin
+ encontro:=false;
+ if(a=nil)then resultado:=false
+
+   else if(a^.info.dni > dato)then
+    borrarelemento(a^.HI,dato,resultado)
+
+   else if(a^.info.dni <dato)then
+    borrarelemento(a^.HD,dato,resultado)
+
+      //encontre dato dato
+      //si sus dos hijos apuntan a nil:
+      else if ((a^.HD = nil) and (a^.HI = nil) ) then begin
+           borrarlista(a^.lint);
+           dispose(a);
+           a:=nil;
+           resultado:=true;
+        end
+
+      //tiene hijo der
+      else if ((a^.HD <> nil) and (a^.HI = nil) ) then begin
+           auxa:=a;
+           a:=a^.HD;
+           dispose(auxa);
+           resultado:=true
+         end
+
+      //tiene hijo izq
+      else if  ((a^.HI <> nil) and (a^.HD = nil) ) then begin
+           auxa:=a;
+           a:=a^.HI;
+           dispose(auxa);
+           resultado:=true
+         end
+
+      //SI TIENE DOS HIJOS
+      else begin
+        auxa:= buscar(a,dato,encontro);
+        auxa^.info.dni:= vermin(a^.HD);
+        borrarelemento(a^.HD,auxa^.info.dni,resultado);
+     end
+end;
+
+
+//variables main
 var
   a: arbol;
-  //p: partido;
+  p: partido;
   lp: listapartidos;
   maxgoles: integer;
   maxeq: string;
   inf, sup: integer;
+  resultado: boolean;
 
 begin
   //Dispongo:
   {leerpartido(p);
   cargarlistapartidos(p,lp);}
 
+  //inicializo estructuras
   lp:=nil;
   a:=nil;
   recorrerl(a,lp);
 
+  //inicializo maximos
   maxgoles:=-1;
   maxeq:= ' ';
+
+  //busco maximo goleador e imprimo
   maximogoleador(a,maxgoles,maxeq);
   writeln('El mayor goleador del torneo esta en: ', maxeq ,' con: ', maxgoles);
 
+  //inicializo valores para buscar dni
   inf:=28000000;
   sup:=32000000;
+
+  //busco e imprimo (revisar)
   acotado(a,inf,sup);
 
+  //borrar elemento con lista dentro
+  resultado:=false;
   readln();
 end.
 
