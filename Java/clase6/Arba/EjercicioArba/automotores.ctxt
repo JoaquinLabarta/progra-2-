@@ -1,0 +1,24 @@
+#BlueJ class context
+comment0.target=automotores
+comment0.text=\ \ \ \n\ Automotor,\ que\ tambi\u00E9n\ tiene\ asociado\ una\ patente,\ un\ importe\ adicional\ seg\u00FAn\ el\ a\u00F1o\ de\ fabricaci\u00F3n\ y\ una\ descripci\u00F3n.\n\ \n\ De\ los\ automotores,\ el\ propietario\ paga\ mensualmente\ el\ importe\ b\u00E1sico\ m\u00E1s\ el\ adicional\ calculado\ seg\u00FAn\ su\ a\u00F1o\ de\ fabricaci\u00F3n.\n
+comment1.params=npatente\ nIA\ ndescripcion\ nadicionala\u00F1o\ propietario\ importe\ a\u00F1o
+comment1.target=automotores(java.lang.String,\ java.lang.Double,\ java.lang.String,\ java.lang.Double,\ Propietario,\ double,\ int)
+comment10.params=importe
+comment10.target=double\ calcularCostosImpu(java.lang.Double)
+comment2.params=
+comment2.target=java.lang.Double\ getAdicionala\u00F1o()
+comment3.params=Nadicionala\u00F1o
+comment3.target=void\ setAdicionala\u00F1o(java.lang.Double)
+comment4.params=
+comment4.target=java.lang.String\ getValor()
+comment5.params=Npatente
+comment5.target=void\ setValor(java.lang.String)
+comment6.params=
+comment6.target=java.lang.Double\ getIA()
+comment7.params=NIA
+comment7.target=void\ setIA(java.lang.Double)
+comment8.params=
+comment8.target=java.lang.String\ getDescripcion()
+comment9.params=Ndescripcion
+comment9.target=void\ setDescripcion(java.lang.String)
+numComments=11

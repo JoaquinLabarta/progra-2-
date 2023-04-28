@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=Punto
+comment1.params=Valorx\ Valory
+comment1.target=Punto(int,\ int)
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Punto\n
+comment2.params=
+comment2.target=Punto()
+comment3.params=
+comment3.target=int\ getX()
+comment4.params=
+comment4.target=int\ getY()
+comment5.params=ValorX\ ValorY
+comment5.target=void\ cambiarPosicion(int,\ int)
+comment6.params=dx\ dy
+comment6.target=void\ tranladar(int,\ int)
+comment7.params=
+comment7.target=java.lang.String\ toString()
+numComments=8

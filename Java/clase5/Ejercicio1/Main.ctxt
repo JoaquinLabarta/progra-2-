@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=Main
+comment0.text=\n\ E)\ Escriba\ un\ programa\ principal\ que\ instancie\ un\ jugador\ y\ un\ entrenador\ con\ datos\ le\u00EDdos\ desde\ teclado.\n\ Pruebe\ el\ correcto\ funcionamiento\ de\ cada\ m\u00E9todo\ implementado.\ \n
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+numComments=2
