@@ -1,66 +1,47 @@
 
 /**
- B- Genere un programa que cree una flota vacía. Cargue micros (sin pasajeros) a la flota con 
- información leída desde teclado (hasta que se ingresa la patente “ZZZ000” o hasta completar la flota).
- Luego lea una patente, busque si existe un micro con dicha patente y en ese caso elimínelo de la flota.
- Lea un destino e informe la patente del micro que va a dicho destino y su hora de salida.
+B- Realice un programa ppal. que cree un micro con patente “ABC123”, destino “Mar del Plata” y hora de salida “5:00 am”.  
+Cargue pasajeros en el micro de la siguiente manera: Leer nros. 
+de asientos desde teclado que corresponden a pedidos de personas. 
+La lectura finaliza cuando se ingresa el nro. de asiento -1 o cuando se llenó el micro.
+Para cada nro. de asiento leído debe: validar el nro; en caso que esté libre, ocuparlo e 
+informar a la persona el éxito de la operación; en caso que esté ocupado informar a la persona la situación y mostrar el nro. 
+del primer asiento libre.  
+Al finalizar, informe la cantidad de asientos ocupados del micro.
  */
 import java.util.Scanner;
-public class main
+public class Main
 {
-    public static void main(String[] args) {
+    public static void Main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int numero=0;
-        //creo flota vacia
-        Flota flota= new  Flota();
-        
-        //creo primer micro sin pasajeros
-        Micro m=new Micro();
-        System.out.println(" ingrese el patente ");
-        m.setPatente( in.next() );
-        System.out.println(" ingrese el destino ");
-        m.setDestino( in.next() );
-        System.out.println(" ingrese la hora de salido ");
-        m.setHs( in.next());
-        m.setAsientos(0);  
-        while( ( flota.estaCompleta()==false)||( m.getPatente().equals("ZZZ000") ) ){
-            //fin creacion
-            flota.agregarMicro(m);
-            //creo primer micro sin pasajeros
-            if(flota.estaCompleta()==false){
-                m=new Micro();
-                System.out.println(" ingrese el patente ");
-                m.setPatente( in.next() );
-                System.out.println(" ingrese el destino ");
-                m.setDestino( in.next() );
-                System.out.println(" ingrese la hora de salido ");
-                m.setHs( in.next());
-                m.setAsientos(0);
+        int numero;
+        //cargo micro
+        micros micro1= new  micros("ABC123","Mar del Plata","5:00 am");
+        System.out.println("ingrese el numero de asiento que desea entre el 0 y el 19");
+        numero=in.nextInt();
+        micro1.setOcupar(numero);
+        while( ( numero!=-1 )||( micro1.getLleno()==false ) ){
+            if(micro1.getLleno()==false){   
+                System.out.println("ingrese el numero de asiento que desea entre el 0 y el 19");
+                numero=in.nextInt();
+                if(micro1.getVnumero(numero) ){
+                    if( micro1.getVasien(numero)==false ){
+                        micro1.setOcupar(numero);
+                    }
+                    else{
+                        System.out.println("el asiento elegido esta ocupado");
+                        System.out.println("el numero del primer asiento libre es : "+micro1.getCanto());
+                }
+                }
+                else
+                System.out.println("el numero de asiento no es valido");
+               
             }
+            else{
+                System.out.println("el micro esta lleno precione -1");
+                System.out.println("ingrese el valor -1 a continuacion");
+                numero=in.nextInt();}
         }
-        flota.imprimir();
-        //Luego lea una patente, busque si existe un micro con dicha patente y en ese caso elimínelo de la flota
-        System.out.println(" ingrese el patente ");
-        String pat=in.next();
-        if(flota.buscarMicroPorPatente(pat)!=null){
-            System.out.println("el micros existe");
-            flota.eliminarMicro(pat);
-            System.out.println("el micro se elimino");
-        }else
-            System.out.println("el micro no existe");    
-        flota.imprimir();
-        //Lea un destino e informe la patente del micro que va a dicho destino y su hora de salida.
-        System.out.println(" ingrese un destino ");
-        String dest=in.next();
-        Micro microaux=new Micro();
-        microaux= flota.buscarMicroPorDestino(dest);
-        if(microaux!=null){
-            System.out.println("el micros con ese destino existe");
-            System.out.println(microaux.getPatente());
-            System.out.println(microaux.getHs());
-        }else
-            System.out.println("el micro con ese destino no existe");
-        
         in.close();
     }
 }
