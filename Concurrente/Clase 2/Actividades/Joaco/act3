@@ -34,7 +34,7 @@ robots
     cantElementos:=0
     RecorrerCalle(cantElementos)
     Informar('cantidad',cantElementos)
-    Pos(1,1)
+    Pos(1,PosCa)
   fin
 {-----------------------------------------------------------------------------}
 variables
@@ -53,6 +53,7 @@ comenzar
   Iniciar(Robot3,1,3)
   Iniciar(Robot4,1,4)
 fin
+
 
 
 

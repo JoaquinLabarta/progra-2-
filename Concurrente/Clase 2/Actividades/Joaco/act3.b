@@ -1,22 +1,51 @@
-programa clase2Act3
+programa clase2Act4
 procesos
-  proceso RecorrerCalle(ES cantElementos:numero)
+  proceso RecorrerCallePar
+  variables
+    cantPapel:numero
   comenzar
-    cantElementos:=0
     repetir 99
+      cantPapel:=0
       mientras HayFlorEnLaEsquina
         tomarFlor
-        cantElementos:=cantElementos+1
       mientras HayPapelEnLaEsquina
         tomarPapel
-        cantElementos:=cantElementos+1
+        cantPapel:=cantPapel+1
+      repetir cantPapel
+        depositarPapel
       mover
-    mientras HayPapelEnLaEsquina
-      tomarPapel
-      cantElementos:=cantElementos+1
+    cantPapel:=0
     mientras HayFlorEnLaEsquina
       tomarFlor
-      cantElementos:=cantElementos+1
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      cantPapel:=cantPapel+1
+    repetir cantPapel
+      depositarPapel
+  fin
+  
+  proceso RecorrerCalleImpar
+  variables
+    cantFlor: numero
+  comenzar
+    repetir 99
+      cantFlor:=0
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cantFlor:=cantFlor+1
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+      repetir cantFlor
+        depositarFlor
+      mover
+    cantFlor:=0
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cantFlor:=cantFlor+1
+    repetir cantFlor
+      depositarFlor
   fin
 {-----------------------------------------------------------------------------}
 areas 
@@ -27,53 +56,25 @@ areas
 {-----------------------------------------------------------------------------}
 robots
   robot robot1
-  variables
-    cantElementos1: numero
   comenzar
     derecha
-    cantElementos1:=0
-    RecorrerCalle(cantElementos1)
-    Informar('cantidad',cantElementos1)
-    Pos(1,1)
+    RecorrerCalleImpar
+    Pos(1,PosCa)
   fin
   
   robot robot2
-  variables
-    cantElem2:numero
   comenzar
     derecha
-    cantElem2:=0
-    RecorrerCalle(cantElem2)
-    Informar('cantidad',cantElem2)
-    Pos(1,2)
+    RecorrerCallePar
+    Pos(1,PosCa)
   fin
-  robot robot3
-  variables
-    cantElem3:numero
-  comenzar
-    derecha
-    cantElem3:=0
-    RecorrerCalle(cantElem3)
-    Informar('cantidad',cantElem3)
-    Pos(1,3)
-  fin
-    
-  robot robot4
-  variables
-    cantElem4:numero
-  comenzar
-    derecha
-    cantElem4:=0
-    RecorrerCalle(cantElem4)
-    Informar('cantidad',cantElem4)
-    Pos(1,4)
-  fin
+  
 {-----------------------------------------------------------------------------}
 variables
   Robot1: robot1
   Robot2: robot2
-  Robot3: robot3
-  Robot4: robot4
+  Robot3: robot1
+  Robot4: robot2
 {-----------------------------------------------------------------------------}
 comenzar
   AsignarArea(Robot1,Area1)
@@ -85,6 +86,4 @@ comenzar
   Iniciar(Robot3,1,3)
   Iniciar(Robot4,1,4)
 fin
-
-
 
